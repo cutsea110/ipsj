@@ -23,6 +23,7 @@ library
                        RailStack
                        -- 4605
                        DumbTree
+                       Ticket
   -- other-modules:
   -- other-extensions:
   build-depends:       base ^>=4.13.0.0
