@@ -1,10 +1,18 @@
 module DumbTree where
 
 data DumbTree = Empty | Fork DumbTree DumbTree
-
+{-
 instance Show DumbTree where
   show Empty      = "O"
   show (Fork l r) = "(" ++ show l ++ "^" ++ show r  ++ ")"
+-}
+instance Show DumbTree where
+  show = showLR "C"
+
+showLR :: String -> DumbTree -> String
+showLR s Empty      = s
+showLR s (Fork l r) = "("++showLR "L" l++"^"++showLR "R" r++")"
+    
 
 trees :: Int -> [DumbTree]
 trees 1 = [Empty]
