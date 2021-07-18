@@ -24,6 +24,11 @@ library
                        -- 4605
                        DumbTree
                        Ticket
+                       Ex460502
+                       Ex460503
+                       Ex460504
+                       Ex460505
+
   -- other-modules:
   -- other-extensions:
   build-depends:       base ^>=4.13.0.0
