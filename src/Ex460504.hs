@@ -12,4 +12,6 @@ trees' ds  os = concat [ odtree os xs ys | (xs, ys) <- splits1 ds ]
 
 odtree :: [Char] -> [Char] -> [Char] -> [([Char], Term)]
 odtree os ls rs
-  = [ (os'', App o l r) | (o:os', l) <- trees' ls os, (os'', r) <- trees' rs os' ]
+  = [ (os'', App o l r)
+    | (o:os', l) <- trees' ls os
+    , (os'',  r) <- trees' rs os' ]
