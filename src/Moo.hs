@@ -64,3 +64,38 @@ score xs ys = (bulls, cows)
     (xs', ys') = unzip [ (x, y) |  (x, y) <- zip xs ys, x /= y ]
     bulls = length xs - length xs'
     cows  = length xs' - length (xs' \\ ys')
+
+
+digits :: [Int]
+digits = [0..9]
+
+gen :: Int -> [UnpackedInt]
+gen n = gens n []
+  where
+    gens :: Int -> [Int] -> [UnpackedInt]
+    gens 0     rs = if disjoint rs then [rs] else []
+    gens (n+1) rs = concatMap (\r -> gens n (rs ++ [r])) digits
+
+
+solver :: Int -> Int -> IO ()
+solver n answer = putStr result
+  where
+    score1 = score (unpack n answer)
+    candidates = gen n
+    result = solver1 n score1 [] candidates
+
+solver1 :: Int -> (UnpackedInt -> MOOProduct) -> [UnpackedInt] -> [UnpackedInt] -> String
+solver1 n score1 history (guess:rs) = solver2 n score1 history rs guess
+
+solver2 :: Int -> (UnpackedInt -> MOOProduct) -> [UnpackedInt] -> [UnpackedInt] -> UnpackedInt -> String
+solver2 n score1 history rs guess
+  = let mooProduct = score1 guess
+    in
+      if mooNum n mooProduct
+      then "Computer found " ++ showUnpackedInt guess
+           ++ " in " ++ show (1+length history) ++ " guesses."
+      else let rs' = [ r | r <- rs, score guess r == mooProduct ]
+           in "Computer guess " ++ showUnpackedInt guess ++ "\n"
+              ++ showMOOProduct mooProduct ++ "\n"
+              ++ solver1 n score1 (guess:history) rs'
+  
