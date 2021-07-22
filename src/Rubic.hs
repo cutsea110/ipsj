@@ -39,7 +39,7 @@ makeCycle1 ss (cs:css)
 prodPerm :: [CyclePerm] -> CyclePerm
 prodPerm ops = makeCycle0 (zip allObj allObj') []
   where
-    allObj' = map (flip goesTo (concat ops)) allObj
+    allObj' = map (`goesTo` concat ops) allObj
 
 t,s,e,b,n,w :: CyclePerm
 t = [[S,W,N,E]]
