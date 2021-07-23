@@ -60,6 +60,45 @@ n' = prodPerm [n,n,n]
 t' = prodPerm [t,t,t]
 b' = prodPerm [b,b,b]
 
+data Hand = E | E' | S | S' | W | W' | N | N' | T | T' | B | B' deriving (Show, Enum, Eq)
+
+encode :: Hand -> [[Obj]]
+encode E  = e
+encode E' = e'
+encode S  = s
+encode S' = s'
+encode W  = w
+encode W' = w'
+encode N  = n
+encode N' = n'
+encode T  = t
+encode T' = t'
+encode B  = b
+encode B' = b'
+
+isIdent :: [Hand] -> Bool
+isIdent [E , E'] = True
+isIdent [E', E ] = True
+isIdent [S , S'] = True
+isIdent [S', S ] = True
+isIdent [W , W'] = True
+isIdent [W', W ] = True
+isIdent [N , N'] = True
+isIdent [N', N ] = True
+isIdent [T , T'] = True
+isIdent [T', T ] = True
+isIdent [B , B'] = True
+isIdent [B', B ] = True
+isIdent _        = False
+
+seqs :: Int -> [[Hand]]
+seqs 1 = [[x] | x <- [E .. B']]
+seqs n = [ x:yys
+         | x <- [E .. B']
+         , yys@(y:ys) <- seqs (n-1)
+         , not $ isIdent [x, y]
+         ]
+
 -- Lemma
 
 edgeCycle3 :: [[Obj]]
