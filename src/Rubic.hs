@@ -6,15 +6,10 @@ data Obj = TE | TS | TW | TN | ET | ES | EB | EN | ST | SE | SB | SW
          | BE | BS | BW | BN | WT | WS | WB | WN | NT | NE | NB | NW
          | TES | EST | STE | TSW | SWT | WTS | TWN | WNT | NTW | TNE
          | NET | ETN | BSE | SEB | EBS | BEN | ENB | NBE | BNW | NWB
-         | WBN | BWS | WSB | SBW deriving (Eq, Show)
+         | WBN | BWS | WSB | SBW deriving (Eq, Enum, Show)
 
 allObj :: [Obj]
-allObj = [ TE, TS, TW, TN, ET, ES, EB, EN, ST, SE, SB, SW
-         , BE, BS, BW, BN, WT, WS, WB, WN, NT, NE, NB, NW
-         , TES, EST, STE, TSW, SWT, WTS, TWN, WNT, NTW, TNE
-         , NET, ETN, BSE, SEB, EBS, BEN, ENB, NBE, BNW, NWB
-         , WBN, BWS, WSB, SBW
-         ]
+allObj = [TE .. SBW]
 
 goesTo :: Obj -> [[Obj]] -> Obj
 goesTo c [] = c
