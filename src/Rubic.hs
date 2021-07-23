@@ -59,3 +59,18 @@ w' = prodPerm [w,w,w]
 n' = prodPerm [n,n,n]
 t' = prodPerm [t,t,t]
 b' = prodPerm [b,b,b]
+
+-- Lemma
+
+edgeCycle3 :: [[Obj]]
+edgeCycle3 = prodPerm [s, s, t, e', w, s, s, e, w', t, s, s]
+
+edgeTranspose2 :: [[Obj]]
+edgeTranspose2 = prodPerm [t', n', b', s', e', s, b, n, t, e, s, b, n, t, e, t', n', b', s', e']
+
+vertexCycle3 :: [[Obj]]
+vertexCycle3 = prodPerm [e, e, s, s, e', n', e, s, s, e', n, e']
+
+vertexTwist2 :: [[Obj]]
+vertexTwist2 = prodPerm [e, r, r, e']
+  where r = prodPerm [t, t, e, s', b, b, s, e']
