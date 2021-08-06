@@ -116,3 +116,20 @@ vertexTwist2 = prodPerm [e, r, r, e']
 
 diagTwist2 :: [[Obj]]
 diagTwist2 = prodPerm [b, b, n, e, n', e, n, e, e, n', e, e, n', e', n, e', n', e, e, n, e, e, b, b]
+
+trans :: [[[Obj]]] -> [[[Obj]]] -> [[Obj]]
+trans g f = prodPerm $ g ++ f ++ g'
+  where g' = reverse g
+
+vt2 :: [[Obj]]
+vt2 = trans [n, n] [b, b, n, e, n', e, n, e, e, n', e, e, n', e', n, e', n', e, e, n, e, e, b, b]
+
+et3 :: [[Obj]]
+et3 = prodPerm [b, b, e, n', s, b, b, n, s', e, b, b]
+
+-- t : 白
+-- b : 青
+-- n : 赤
+-- s : 橙
+-- e : 緑
+-- w : 黄
