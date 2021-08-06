@@ -113,3 +113,6 @@ vertexCycle3 = prodPerm [e, e, s, s, e', n', e, s, s, e', n, e']
 vertexTwist2 :: [[Obj]]
 vertexTwist2 = prodPerm [e, r, r, e']
   where r = prodPerm [t, t, e, s', b, b, s, e']
+
+diagTwist2 :: [[Obj]]
+diagTwist2 = prodPerm [b, b, n, e, n', e, n, e, e, n', e, e, n', e', n, e', n', e, e, n, e, e, b, b]
