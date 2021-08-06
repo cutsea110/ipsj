@@ -102,29 +102,29 @@ seqs n = [ x:yys
 -- Lemma
 
 edgeCycle3 :: [[Obj]]
-edgeCycle3 = prodPerm [s, s, t, e', w, s, s, e, w', t, s, s]
+edgeCycle3 = prodPerm $ map encode [S, S, T, E', W, S, S, E, W', T, S, S]
 
 edgeTranspose2 :: [[Obj]]
-edgeTranspose2 = prodPerm [t', n', b', s', e', s, b, n, t, e, s, b, n, t, e, t', n', b', s', e']
+edgeTranspose2 = prodPerm $ map encode [T', N', B', S', E', S, B, N, T, E, S, B, N, T, E, T', N', B', S', E']
 
 vertexCycle3 :: [[Obj]]
-vertexCycle3 = prodPerm [e, e, s, s, e', n', e, s, s, e', n, e']
+vertexCycle3 = prodPerm $ map encode [E, E, S, S, E', N', E, S, S, E', N, E']
 
 vertexTwist2 :: [[Obj]]
-vertexTwist2 = prodPerm [e, r, r, e']
-  where r = prodPerm [t, t, e, s', b, b, s, e']
+vertexTwist2 = prodPerm $ map encode $ [E] ++ r ++ r ++ [E']
+  where r = [T, T, E, S', B, B, S, E']
 
 diagTwist2 :: [[Obj]]
-diagTwist2 = prodPerm [e, e, n, t, n', t, n, t, t, n', t, t, n', t', n, t', n', t, t, n, t, t, e, e]
+diagTwist2 = prodPerm $ map encode [E, E, N, T, N', T, N, T, T, N', T, T, N', T', N, T', N', T, T, N, T, T, E, E]
 
 vt2 :: [[Obj]]
-vt2 = prodPerm $ [n, n] ++ [e, e, n, t, n', t, n, t, t, n', t, t, n', t', n, t', n', t, t, n, t, t, e, e] ++ [n', n']
+vt2 = prodPerm $ map encode $  [N, N] ++ [E, E, N, T, N', T, N, T, T, N', T, T, N', T', N, T', N', T, T, N, T, T, E, E] ++ [N', N']
 
 et3 :: [[Obj]]
-et3 = prodPerm [e, e, t, n', s, e, e, n, s', t, e, e]
+et3 = prodPerm $ map encode [E, E, T, N', S, E, E, N, S', T, E, E]
 
 et3bis :: [[Obj]]
-et3bis = prodPerm $ [t, n, e, s, b, t] ++ [e, e, t, n', s, e, e, n, s', t, e, e] ++ [t', b', s', e', n', t']
+et3bis = prodPerm $ map encode $ [T, N, E, S, B, T] ++ [E, E, T, N', S, E, E, N, S', T, E, E] ++ [T', B', S', E', N', T']
 
 -- t : 緑
 -- b : 黄
