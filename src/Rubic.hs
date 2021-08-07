@@ -138,6 +138,9 @@ vertexTwist2 = [E] ++ r ++ r ++ [E']
 diagTwist2 :: [Hand]
 diagTwist2 = [E, E, N, T, N', T, N, T, T, N', T, T, N', T', N, T', N', T, T, N, T, T, E, E]
 
+musubi :: [Hand]
+musubi = [E, N, W, S, T, T, S', W', N', E', T, T]
+
 vt2 :: [Hand]
 vt2 = trans [N, N] diagTwist2
 
