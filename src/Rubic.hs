@@ -2,14 +2,14 @@ module Rubic where
 
 import Data.List
 
-data Obj = TE | TS | TW | TN | ET | ES | EB | EN | ST | SE | SB | SW
-         | BE | BS | BW | BN | WT | WS | WB | WN | NT | NE | NB | NW
-         | TES | EST | STE | TSW | SWT | WTS | TWN | WNT | NTW | TNE
-         | NET | ETN | BSE | SEB | EBS | BEN | ENB | NBE | BNW | NWB
-         | WBN | BWS | WSB | SBW deriving (Eq, Enum, Show)
+data Obj = UR | UF | UL | UB | RU | RF | RD | RB | FU | FR | FD | FL
+         | DR | DF | DL | DB | LU | LF | LD | LB | BU | BR | BD | BL
+         | URF | RFU | FUR | UFL | FLU | LUF | ULB | LBU | BUL | UBR
+         | BRU | RUB | DFR | FRD | RDF | DRB | RBD | BDR | DBL | BLD
+         | LDB | DLF | LFD | FDL deriving (Eq, Enum, Show)
 
 allObj :: [Obj]
-allObj = [TE .. SBW]
+allObj = [UR .. FDL]
 
 goesTo :: Obj -> [[Obj]] -> Obj
 goesTo c [] = c
@@ -47,12 +47,12 @@ prodPerm ops = makeCycle0 (zip allObj allGo) []
     allGo = map (`goesTo` concat ops) allObj
 
 e,e',s,s',w,w',n,n',t,t',b,b' :: [[Obj]]
-e  = [[SE,TE,NE,BE],[ES,ET,EN,EB],[TES,NET,BEN,SEB],[STE,TNE,NBE,BSE],[EST,ETN,ENB,EBS]]
-s  = [[WS,TS,ES,BS],[SW,ST,SE,SB],[TSW,EST,BSE,WSB],[WTS,TES,EBS,BWS],[SWT,STE,SEB,SBW]]
-w  = [[NW,TW,SW,BW],[WN,WT,WS,WB],[TWN,SWT,BWS,NWB],[NTW,TSW,SBW,BNW],[WNT,WTS,WSB,WBN]]
-n  = [[EN,TN,WN,BN],[NE,NT,NW,NB],[TNE,WNT,BNW,ENB],[ETN,TWN,WBN,BEN],[NET,NTW,NWB,NBE]]
-t  = [[ST,WT,NT,ET],[TS,TW,TN,TE],[WTS,NTW,ETN,STE],[SWT,WNT,NET,EST],[TSW,TWN,TNE,TES]]
-b  = [[SB,EB,NB,WB],[BS,BE,BN,BW],[EBS,NBE,WBN,SBW],[SEB,ENB,NWB,WSB],[BSE,BEN,BNW,BWS]]
+e  = [[FR,UR,BR,DR],[RF,RU,RB,RD],[URF,BRU,DRB,FRD],[FUR,UBR,BDR,DFR],[RFU,RUB,RBD,RDF]]
+s  = [[LF,UF,RF,DF],[FL,FU,FR,FD],[UFL,RFU,DFR,LFD],[LUF,URF,RDF,DLF],[FLU,FUR,FRD,FDL]]
+w  = [[BL,UL,FL,DL],[LB,LU,LF,LD],[ULB,FLU,DLF,BLD],[BUL,UFL,FDL,DBL],[LBU,LUF,LFD,LDB]]
+n  = [[RB,UB,LB,DB],[BR,BU,BL,BD],[UBR,LBU,DBL,RBD],[RUB,ULB,LDB,DRB],[BRU,BUL,BLD,BDR]]
+t  = [[FU,LU,BU,RU],[UF,UL,UB,UR],[LUF,BUL,RUB,FUR],[FLU,LBU,BRU,RFU],[UFL,ULB,UBR,URF]]
+b  = [[FD,RD,BD,LD],[DF,DR,DB,DL],[RDF,BDR,LDB,FDL],[FRD,RBD,BLD,LFD],[DFR,DRB,DBL,DLF]]
 e' = prodPerm [e,e,e]
 s' = prodPerm [s,s,s]
 w' = prodPerm [w,w,w]
@@ -60,41 +60,41 @@ n' = prodPerm [n,n,n]
 t' = prodPerm [t,t,t]
 b' = prodPerm [b,b,b]
 
-data Hand = E | E' | S | S' | W | W' | N | N' | T | T' | B | B' deriving (Show, Enum, Eq)
+data Hand = R | R' | F | F' | L | L' | B | B' | U | U' | D | D' deriving (Show, Enum, Eq)
 
 encode :: Hand -> [[Obj]]
-encode E  = e
-encode E' = e'
-encode S  = s
-encode S' = s'
-encode W  = w
-encode W' = w'
-encode N  = n
-encode N' = n'
-encode T  = t
-encode T' = t'
-encode B  = b
-encode B' = b'
+encode R  = e
+encode R' = e'
+encode F  = s
+encode F' = s'
+encode L  = w
+encode L' = w'
+encode B  = n
+encode B' = n'
+encode U  = t
+encode U' = t'
+encode D  = b
+encode D' = b'
 
 isIdent :: [Hand] -> Bool
-isIdent [E , E'] = True
-isIdent [E', E ] = True
-isIdent [S , S'] = True
-isIdent [S', S ] = True
-isIdent [W , W'] = True
-isIdent [W', W ] = True
-isIdent [N , N'] = True
-isIdent [N', N ] = True
-isIdent [T , T'] = True
-isIdent [T', T ] = True
+isIdent [R , R'] = True
+isIdent [R', R ] = True
+isIdent [F , F'] = True
+isIdent [F', F ] = True
+isIdent [L , L'] = True
+isIdent [L', L ] = True
 isIdent [B , B'] = True
 isIdent [B', B ] = True
+isIdent [U , U'] = True
+isIdent [U', U ] = True
+isIdent [D , D'] = True
+isIdent [D', D ] = True
 isIdent _        = False
 
 seqs :: Int -> [[Hand]]
-seqs 1 = [[x] | x <- [E .. B']]
+seqs 1 = [[x] | x <- [R .. D']]
 seqs n = [ x:yys
-         | x <- [E .. B']
+         | x <- [R .. D']
          , yys@(y:ys) <- seqs (n-1)
          , not $ isIdent [x, y]
          ]
@@ -107,52 +107,45 @@ trans g f = g ++ f ++ g'
   where g' = reverse $ map inverse g
 
 inverse :: Hand -> Hand
-inverse E  = E'
-inverse E' = E
-inverse S  = S'
-inverse S' = S
-inverse W  = W'
-inverse W' = W
-inverse N  = N'
-inverse N' = N
-inverse T  = T'
-inverse T' = T
+inverse R  = R'
+inverse R' = R
+inverse F  = F'
+inverse F' = F
+inverse L  = L'
+inverse L' = L
 inverse B  = B'
 inverse B' = B
+inverse U  = U'
+inverse U' = U
+inverse D  = D'
+inverse D' = D
 
 -- Lemma
 
 edgeCycle3 :: [Hand]
-edgeCycle3 = [S, S, T, E', W, S, S, E, W', T, S, S]
+edgeCycle3 = [F, F, U, R', L, F, F, R, L', U, F, F]
 
 edgeTranspose2 :: [Hand]
-edgeTranspose2 = [T', N', B', S', E', S, B, N, T, E, S, B, N, T, E, T', N', B', S', E']
+edgeTranspose2 = [U', B', D', F', R', F, D, B, U, R, F, D, B, U, R, U', B', D', F', R']
 
 vertexCycle3 :: [Hand]
-vertexCycle3 = [E, E, S, S, E', N', E, S, S, E', N, E']
+vertexCycle3 = [R, R, F, F, R', B', R, F, F, R', B, R']
 
 vertexTwist2 :: [Hand]
-vertexTwist2 = trans [E] (r ++ r)
-  where r = [T, T, E, S', B, B, S, E']
+vertexTwist2 = trans [R] (r ++ r)
+  where r = [U, U, R, F', D, D, F, R']
 
 diagTwist2 :: [Hand]
-diagTwist2 = [E, E, N, T, N', T, N, T, T, N', T, T, N', T', N, T', N', T, T, N, T, T, E, E]
+diagTwist2 = [R, R, B, U, B', U, B, U, U, B', U, U, B', U', B, U', B', U, U, B, U, U, R, R]
 
 musubi :: [Hand]
-musubi = [E, N, W, S, T, T, S', W', N', E', T, T]
+musubi = [R, B, L, F, U, U, F', L', B', R', U, U]
 
 vt2 :: [Hand]
-vt2 = trans [N, N] diagTwist2
+vt2 = trans [B, B] diagTwist2
 
 et3 :: [Hand]
-et3 = [E, E, T, N', S, E, E, N, S', T, E, E]
+et3 = [R, R, U, B', F, R, R, B, F', U, R, R]
 
 et3bis :: [Hand]
-et3bis = trans [T, N, E, S, B, T] et3
-
--- t : 緑
--- b : 黄
--- n : 赤
--- s : 橙
--- e : 青
--- w : 白
+et3bis = trans [U, B, R, F, D, U] et3
