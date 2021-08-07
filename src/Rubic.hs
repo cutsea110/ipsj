@@ -103,24 +103,22 @@ run :: [Hand] -> [[Obj]]
 run = prodPerm . map encode
 
 trans :: [Hand] -> [Hand] -> [Hand]
-trans g f = g ++ f ++ inverse g
+trans g f = g ++ f ++ g'
+  where g' = reverse $ map inverse g
 
-inverse :: [Hand] -> [Hand]
-inverse = reverse . map inv
-
-inv :: Hand -> Hand
-inv E  = E'
-inv E' = E
-inv S  = S'
-inv S' = S
-inv W  = W'
-inv W' = W
-inv N  = N'
-inv N' = N
-inv T  = T'
-inv T' = T
-inv B  = B'
-inv B' = B
+inverse :: Hand -> Hand
+inverse E  = E'
+inverse E' = E
+inverse S  = S'
+inverse S' = S
+inverse W  = W'
+inverse W' = W
+inverse N  = N'
+inverse N' = N
+inverse T  = T'
+inverse T' = T
+inverse B  = B'
+inverse B' = B
 
 -- Lemma
 
@@ -141,7 +139,7 @@ diagTwist2 :: [Hand]
 diagTwist2 = [E, E, N, T, N', T, N, T, T, N', T, T, N', T', N, T', N', T, T, N, T, T, E, E]
 
 vt2 :: [Hand]
-vt2 = [N, N] ++ diagTwist2 ++ [N', N']
+vt2 = trans [N, N] diagTwist2
 
 et3 :: [Hand]
 et3 = [E, E, T, N', S, E, E, N, S', T, E, E]
