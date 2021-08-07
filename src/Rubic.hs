@@ -46,35 +46,35 @@ prodPerm ops = makeCycle0 (zip allObj allGo) []
   where
     allGo = map (`goesTo` concat ops) allObj
 
-e,e',s,s',w,w',n,n',t,t',b,b' :: [[Obj]]
-e  = [[FR,UR,BR,DR],[RF,RU,RB,RD],[URF,BRU,DRB,FRD],[FUR,UBR,BDR,DFR],[RFU,RUB,RBD,RDF]]
-s  = [[LF,UF,RF,DF],[FL,FU,FR,FD],[UFL,RFU,DFR,LFD],[LUF,URF,RDF,DLF],[FLU,FUR,FRD,FDL]]
-w  = [[BL,UL,FL,DL],[LB,LU,LF,LD],[ULB,FLU,DLF,BLD],[BUL,UFL,FDL,DBL],[LBU,LUF,LFD,LDB]]
-n  = [[RB,UB,LB,DB],[BR,BU,BL,BD],[UBR,LBU,DBL,RBD],[RUB,ULB,LDB,DRB],[BRU,BUL,BLD,BDR]]
-t  = [[FU,LU,BU,RU],[UF,UL,UB,UR],[LUF,BUL,RUB,FUR],[FLU,LBU,BRU,RFU],[UFL,ULB,UBR,URF]]
-b  = [[FD,RD,BD,LD],[DF,DR,DB,DL],[RDF,BDR,LDB,FDL],[FRD,RBD,BLD,LFD],[DFR,DRB,DBL,DLF]]
-e' = prodPerm [e,e,e]
-s' = prodPerm [s,s,s]
-w' = prodPerm [w,w,w]
-n' = prodPerm [n,n,n]
-t' = prodPerm [t,t,t]
+r,r',f,f',l,l',b,b',u,u',d,d' :: [[Obj]]
+r  = [[FR,UR,BR,DR],[RF,RU,RB,RD],[URF,BRU,DRB,FRD],[FUR,UBR,BDR,DFR],[RFU,RUB,RBD,RDF]]
+f  = [[LF,UF,RF,DF],[FL,FU,FR,FD],[UFL,RFU,DFR,LFD],[LUF,URF,RDF,DLF],[FLU,FUR,FRD,FDL]]
+l  = [[BL,UL,FL,DL],[LB,LU,LF,LD],[ULB,FLU,DLF,BLD],[BUL,UFL,FDL,DBL],[LBU,LUF,LFD,LDB]]
+b  = [[RB,UB,LB,DB],[BR,BU,BL,BD],[UBR,LBU,DBL,RBD],[RUB,ULB,LDB,DRB],[BRU,BUL,BLD,BDR]]
+u  = [[FU,LU,BU,RU],[UF,UL,UB,UR],[LUF,BUL,RUB,FUR],[FLU,LBU,BRU,RFU],[UFL,ULB,UBR,URF]]
+d  = [[FD,RD,BD,LD],[DF,DR,DB,DL],[RDF,BDR,LDB,FDL],[FRD,RBD,BLD,LFD],[DFR,DRB,DBL,DLF]]
+r' = prodPerm [r,r,r]
+f' = prodPerm [f,f,f]
+l' = prodPerm [l,l,l]
 b' = prodPerm [b,b,b]
+u' = prodPerm [u,u,u]
+d' = prodPerm [d,d,d]
 
 data Hand = R | R' | F | F' | L | L' | B | B' | U | U' | D | D' deriving (Show, Enum, Eq)
 
 encode :: Hand -> [[Obj]]
-encode R  = e
-encode R' = e'
-encode F  = s
-encode F' = s'
-encode L  = w
-encode L' = w'
-encode B  = n
-encode B' = n'
-encode U  = t
-encode U' = t'
-encode D  = b
-encode D' = b'
+encode R  = r
+encode R' = r'
+encode F  = f
+encode F' = f'
+encode L  = l
+encode L' = l'
+encode B  = b
+encode B' = b'
+encode U  = u
+encode U' = u'
+encode D  = d
+encode D' = d'
 
 isIdent :: [Hand] -> Bool
 isIdent [R , R'] = True
