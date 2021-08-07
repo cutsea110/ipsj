@@ -132,7 +132,7 @@ vertexCycle3 :: [Hand]
 vertexCycle3 = [E, E, S, S, E', N', E, S, S, E', N, E']
 
 vertexTwist2 :: [Hand]
-vertexTwist2 = [E] ++ r ++ r ++ [E']
+vertexTwist2 = trans [E] (r ++ r)
   where r = [T, T, E, S', B, B, S, E']
 
 diagTwist2 :: [Hand]
