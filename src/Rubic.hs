@@ -99,32 +99,55 @@ seqs n = [ x:yys
          , not $ isIdent [x, y]
          ]
 
+run :: [Hand] -> [[Obj]]
+run = prodPerm . map encode
+
+trans :: [Hand] -> [Hand] -> [Hand]
+trans g f = g ++ f ++ inverse g
+
+inverse :: [Hand] -> [Hand]
+inverse = reverse . map inv
+
+inv :: Hand -> Hand
+inv E  = E'
+inv E' = E
+inv S  = S'
+inv S' = S
+inv W  = W'
+inv W' = W
+inv N  = N'
+inv N' = N
+inv T  = T'
+inv T' = T
+inv B  = B'
+inv B' = B
+
 -- Lemma
 
-edgeCycle3 :: [[Obj]]
-edgeCycle3 = prodPerm $ map encode [S, S, T, E', W, S, S, E, W', T, S, S]
+edgeCycle3 :: [Hand]
+edgeCycle3 = [S, S, T, E', W, S, S, E, W', T, S, S]
 
-edgeTranspose2 :: [[Obj]]
-edgeTranspose2 = prodPerm $ map encode [T', N', B', S', E', S, B, N, T, E, S, B, N, T, E, T', N', B', S', E']
+edgeTranspose2 :: [Hand]
+edgeTranspose2 = [T', N', B', S', E', S, B, N, T, E, S, B, N, T, E, T', N', B', S', E']
 
-vertexCycle3 :: [[Obj]]
-vertexCycle3 = prodPerm $ map encode [E, E, S, S, E', N', E, S, S, E', N, E']
+vertexCycle3 :: [Hand]
+vertexCycle3 = [E, E, S, S, E', N', E, S, S, E', N, E']
 
-vertexTwist2 :: [[Obj]]
-vertexTwist2 = prodPerm $ map encode $ [E] ++ r ++ r ++ [E']
+vertexTwist2 :: [Hand]
+vertexTwist2 = [E] ++ r ++ r ++ [E']
   where r = [T, T, E, S', B, B, S, E']
 
-diagTwist2 :: [[Obj]]
-diagTwist2 = prodPerm $ map encode [E, E, N, T, N', T, N, T, T, N', T, T, N', T', N, T', N', T, T, N, T, T, E, E]
+diagTwist2 :: [Hand]
+diagTwist2 = [E, E, N, T, N', T, N, T, T, N', T, T, N', T', N, T', N', T, T, N, T, T, E, E]
 
-vt2 :: [[Obj]]
-vt2 = prodPerm $ map encode $  [N, N] ++ [E, E, N, T, N', T, N, T, T, N', T, T, N', T', N, T', N', T, T, N, T, T, E, E] ++ [N', N']
+vt2 :: [Hand]
+vt2 = [N, N] ++ diagTwist2 ++ [N', N']
 
-et3 :: [[Obj]]
-et3 = prodPerm $ map encode [E, E, T, N', S, E, E, N, S', T, E, E]
+et3 :: [Hand]
+et3 = [E, E, T, N', S, E, E, N, S', T, E, E]
 
-et3bis :: [[Obj]]
-et3bis = prodPerm $ map encode $ [T, N, E, S, B, T] ++ [E, E, T, N', S, E, E, N, S', T, E, E] ++ [T', B', S', E', N', T']
+et3bis :: [Hand]
+et3bis = trans [T, N, E, S, B, T] et3
 
 -- t : 緑
 -- b : 黄
