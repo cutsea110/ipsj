@@ -77,19 +77,7 @@ encode D  = d
 encode D' = d'
 
 isIdent :: [Hand] -> Bool
-isIdent [R , R'] = True
-isIdent [R', R ] = True
-isIdent [F , F'] = True
-isIdent [F', F ] = True
-isIdent [L , L'] = True
-isIdent [L', L ] = True
-isIdent [B , B'] = True
-isIdent [B', B ] = True
-isIdent [U , U'] = True
-isIdent [U', U ] = True
-isIdent [D , D'] = True
-isIdent [D', D ] = True
-isIdent _        = False
+isIdent [x, y] = inverse x == y
 
 seqs :: Int -> [[Hand]]
 seqs 1 = [[x] | x <- [R .. D']]
