@@ -132,8 +132,8 @@ musubi = [R, B, L, F, U, U, F', L', B', R', U, U]
 vt2 :: [Hand]
 vt2 = trans [B, B] diagTwist2
 
-et3 :: [Hand]
-et3 = [R, R, U, B', F, R, R, B, F', U, R, R]
+ec3 :: [Hand]
+ec3 = [R, R, U, B', F, R, R, B, F', U, R, R]
 
-et3bis :: [Hand]
-et3bis = trans [U, B, R, F, D, U] et3
+ec3bis :: [Hand]
+ec3bis = trans [U, B, R, F, D, U] ec3
