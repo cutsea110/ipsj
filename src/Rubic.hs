@@ -110,30 +110,66 @@ inverse D' = D
 
 -- Lemma
 
+{- |
+>>> run edgeCycle3
+[[RU,FU,LU],[UR,UF,UL]]
+-}
 edgeCycle3 :: [Hand]
 edgeCycle3 = [F, F, U, R', L, F, F, R, L', U, F, F]
 
+{- |
+>>> run edgeTranspose2
+[[UF,FU],[UR,RU]]
+-}
 edgeTranspose2 :: [Hand]
 edgeTranspose2 = [U', B', D', F', R', F, D, B, U, R, F, D, B, U, R, U', B', D', F', R']
 
+{- |
+>>> run vertexCycle3
+[[FUR,LUF,RUB],[RFU,FLU,BRU],[URF,UFL,UBR]]
+-}
 vertexCycle3 :: [Hand]
 vertexCycle3 = [R, R, F, F, R', B', R, F, F, R', B, R']
 
+{- |
+>>> run vertexTwist2
+[[UFL,LUF,FLU],[URF,RFU,FUR]]
+-}
 vertexTwist2 :: [Hand]
 vertexTwist2 = trans [R] (r ++ r)
   where r = [U, U, R, F', D, D, F, R']
 
+{- |
+>>> run diagTwist2
+[[DRB,BDR,RBD],[UFL,FLU,LUF]]
+-}
 diagTwist2 :: [Hand]
 diagTwist2 = [R, R, B, U, B', U, B, U, U, B', U, U, B', U', B, U', B', U, U, B, U, U, R, R]
 
+{- |
+>>> run musubi
+[[FU,BU,FR],[UF,UB,RF]]
+-}
 musubi :: [Hand]
 musubi = [R, B, L, F, U, U, F', L', B', R', U, U]
 
+{- |
+>>> run vt2
+[[ULB,BUL,LBU],[UFL,FLU,LUF]]
+-}
 vt2 :: [Hand]
 vt2 = trans [B, B] diagTwist2
 
+{- |
+>>> run ec3
+[[RU,FU,BU],[UR,UF,UB]]
+-}
 ec3 :: [Hand]
 ec3 = [R, R, U, B', F, R, R, B, F', U, R, R]
 
+{- |
+>>> run ec3bis
+[[RF,FU,BR],[UF,RB,FR]]
+-}
 ec3bis :: [Hand]
 ec3bis = trans [U, B, R, F, D, U] ec3
