@@ -13,9 +13,9 @@ emptyTable = []
 
 lookupTable :: Key -> Table -> [Value]
 lookupTable key []          = []
-lookupTable key ((k,v):tbl) | key > k  = []
+lookupTable key ((k,v):tbl) | key >  k = []
                             | key == k = [v]
-                            | key < k  = lookupTable key tbl
+                            | key <  k = lookupTable key tbl
 
 insertTable :: Key -> Value -> Table -> Table
 insertTable k v tbl =
