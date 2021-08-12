@@ -35,6 +35,7 @@ library
                        Rubic
                        -- 4608
                        CC
+                       MemoCC
 
   -- other-modules:
   -- other-extensions:
