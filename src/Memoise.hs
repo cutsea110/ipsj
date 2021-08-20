@@ -1,3 +1,4 @@
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module Memoise where
 
 type Amount = Integer
@@ -32,7 +33,7 @@ type Table a b = [(a, b)]
 type Key   = (Amount, [Coin])
 type Value = Count
 
-emptyTable :: Table Key Value
+emptyTable :: Table a b
 emptyTable = []
 
 lookupTable :: Ord a => a -> Table a b -> [b]
@@ -47,15 +48,26 @@ insertTable k v tbl =
        (xs, ys) -> xs ++ (k, v):ys
 
 memocc :: Key -> State (Table Key Value) Value
-memocc (0, _ ) = withState 1
-memocc (_, []) = withState 0
+memocc (0, _ ) = 1
+memocc (_, []) = 0
 memocc arg@(a, _)
-  | a < 0 = withState 0
-  | otherwise =
-      memoise (\(a, ccs@(c:cs)) ->
-                  memocc (a-c, ccs) `add` memocc (a, cs)
-              ) arg
-      where add = fun2WithState (+)
+  | a < 0 = 0
+  | otherwise = memoise (\(a, ccs@(c:cs)) -> memocc (a-c, ccs) + memocc (a, cs)) arg
 
 evalMemoCC :: Amount -> [Coin] -> Count
 evalMemoCC amount coins = fst (memocc (amount, coins) emptyTable)
+
+instance Eq b => Eq (State (Table a b) b) where
+  sx == sy = evalState sx emptyTable == evalState sy emptyTable
+
+instance Show b => Show (State (Table a b) b) where
+  show sx = show (evalState sx emptyTable)
+
+instance Num b => Num (State (Table a b) b) where
+  (+)         = fun2WithState (+)
+  (-)         = fun2WithState (-)
+  (*)         = fun2WithState (*)
+  negate      = fun1WithState negate
+  abs         = fun1WithState abs
+  signum      = fun1WithState signum
+  fromInteger = withState . fromInteger
