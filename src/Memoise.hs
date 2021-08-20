@@ -5,6 +5,9 @@ type Amount = Integer
 type Coin   = Integer
 type Count  = Integer
 
+---------------------------------------------------
+-- State Monad
+---------------------------------------------------
 type State s t = s -> (t, s)
 
 -- | return
@@ -23,15 +26,11 @@ fun1WithState f sx = bindState sx (withState . f)
 fun2WithState :: (a -> b -> c) -> State s a -> State s b -> State s c
 fun2WithState f sx sy = bindState sx (\x -> bindState sy (withState . f x))
 
-memoise :: Ord a => (a -> State (Table a b) b) -> a -> State (Table a b) b
-memoise f x tbl = case lookupTable x tbl of
-  y:_ -> (y, tbl)
-  []  -> let (y, tbl') = f x tbl
-         in (y, insertTable x y tbl')
-
+---------------------------------------------------
+-- Table
+---------------------------------------------------
 type Table a b = [(a, b)]
-type Key   = (Amount, [Coin])
-type Value = Count
+type Memo a b = a -> State (Table a b) b
 
 emptyTable :: Table a b
 emptyTable = []
@@ -47,16 +46,19 @@ insertTable k v tbl =
   case break ((k >) . fst) tbl of
        (xs, ys) -> xs ++ (k, v):ys
 
-memocc :: Key -> State (Table Key Value) Value
-memocc (0, _ ) = 1
-memocc (_, []) = 0
-memocc arg@(a, _)
-  | a < 0 = 0
-  | otherwise = memoise (\(a, ccs@(c:cs)) -> memocc (a-c, ccs) + memocc (a, cs)) arg
+---------------------------------------------------
+-- Memoise
+---------------------------------------------------
+memoise :: Ord a => (a -> State (Table a b) b) -> a -> State (Table a b) b
+memoise f x tbl = case lookupTable x tbl of
+  y:_ -> (y, tbl)
+  []  -> let (y, tbl') = f x tbl
+         in (y, insertTable x y tbl')
 
-evalMemoCC :: Amount -> [Coin] -> Count
-evalMemoCC amount coins = fst (memocc (amount, coins) emptyTable)
 
+---------------------------------------------------
+-- CC on Memo
+---------------------------------------------------
 instance Eq b => Eq (State (Table a b) b) where
   sx == sy = evalState sx emptyTable == evalState sy emptyTable
 
@@ -71,3 +73,13 @@ instance Num b => Num (State (Table a b) b) where
   abs         = fun1WithState abs
   signum      = fun1WithState signum
   fromInteger = withState . fromInteger
+
+memocc :: Memo (Amount, [Coin]) Count
+memocc (0, _ ) = 1
+memocc (_, []) = 0
+memocc arg@(a, _)
+  | a < 0 = 0
+  | otherwise = memoise (\(a, ccs@(c:cs)) -> memocc (a-c, ccs) + memocc (a, cs)) arg
+
+evalMemoCC :: Amount -> [Coin] -> Count
+evalMemoCC amount coins = fst (memocc (amount, coins) emptyTable)
