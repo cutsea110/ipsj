@@ -8,7 +8,7 @@ type State s t = s -> (t, s)
 
 -- | return
 withState :: t -> State s t
-withState x = \state -> (x, state)
+withState x state = (x, state)
 
 -- | >>=
 bindState :: State s t -> (t -> State s u) -> State s u
@@ -18,9 +18,9 @@ evalState :: State s t -> s -> t
 evalState s s0 = fst (s s0)
 
 fun1WithState :: (a -> b) -> State s a -> State s b
-fun1WithState f sx = bindState sx (\x -> withState (f x))
+fun1WithState f sx = bindState sx (withState . f)
 fun2WithState :: (a -> b -> c) -> State s a -> State s b -> State s c
-fun2WithState f sx sy = bindState sx (\x -> bindState sy (\y -> withState (f x y)))
+fun2WithState f sx sy = bindState sx (\x -> bindState sy (withState . f x))
 
 memoise :: Ord a => (a -> State (Table a b) b) -> a -> State (Table a b) b
 memoise f x tbl = case lookupTable x tbl of
@@ -46,18 +46,17 @@ insertTable k v tbl =
   case break ((k >) . fst) tbl of
        (xs, ys) -> xs ++ (k, v):ys
 
-memocc :: Amount -> [Coin] -> Table Key Value -> (Count, Table Key Value)
-memocc 0 _  tbl = (1, tbl)
-memocc _ [] tbl = (0, tbl)
-memocc a ccs@(c:cs) tbl
-  | a < 0     = (0, tbl)
-  | otherwise = case lookupTable (a, ccs) tbl of
-                  (v:_) -> (v, tbl)
-                  []    -> let (cnt1, tbl1) = memocc (a-c) ccs tbl
-                               (cnt2, tbl2) = memocc a     cs  tbl1
-                               cnt3         = cnt1 + cnt2
-                               tbl3         = insertTable (a, ccs) cnt3 tbl2
-                           in (cnt3, tbl3)
+memocc :: Key -> State (Table Key Value) Value
+memocc (0, _ ) = withState 1
+memocc (_, []) = withState 0
+memocc arg@(a, _)
+  | a < 0 = withState 0
+  | otherwise =
+      memoise (\(a, ccs@(c:cs)) ->
+                  bindState (memocc (a-c, ccs))
+                  (\cnt1 -> bindState (memocc (a, cs))
+                    (\cnt2 -> withState (cnt1 + cnt2)))
+              ) arg
 
 evalMemoCC :: Amount -> [Coin] -> Count
-evalMemoCC amount coins = fst (memocc amount coins emptyTable)
+evalMemoCC amount coins = fst (memocc (amount, coins) emptyTable)
