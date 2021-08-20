@@ -53,10 +53,9 @@ memocc arg@(a, _)
   | a < 0 = withState 0
   | otherwise =
       memoise (\(a, ccs@(c:cs)) ->
-                  bindState (memocc (a-c, ccs))
-                  (\cnt1 -> bindState (memocc (a, cs))
-                    (\cnt2 -> withState (cnt1 + cnt2)))
+                  memocc (a-c, ccs) `add` memocc (a, cs)
               ) arg
+      where add = fun2WithState (+)
 
 evalMemoCC :: Amount -> [Coin] -> Count
 evalMemoCC amount coins = fst (memocc (amount, coins) emptyTable)
