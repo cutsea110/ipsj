@@ -22,25 +22,31 @@ fun1WithState f sx = bindState sx (\x -> withState (f x))
 fun2WithState :: (a -> b -> c) -> State s a -> State s b -> State s c
 fun2WithState f sx sy = bindState sx (\x -> bindState sy (\y -> withState (f x y)))
 
-type Table = [(Key, Value)]
+memoise :: Ord a => (a -> State (Table a b) b) -> a -> State (Table a b) b
+memoise f x tbl = case lookupTable x tbl of
+  y:_ -> (y, tbl)
+  []  -> let (y, tbl') = f x tbl
+         in (y, insertTable x y tbl')
+
+type Table a b = [(a, b)]
 type Key   = (Amount, [Coin])
 type Value = Count
 
-emptyTable :: Table
+emptyTable :: Table Key Value
 emptyTable = []
 
-lookupTable :: Key -> Table -> [Value]
+lookupTable :: Ord a => a -> Table a b -> [b]
 lookupTable key []          = []
 lookupTable key ((k,v):tbl) | key >  k = []
                             | key == k = [v]
                             | key <  k = lookupTable key tbl
 
-insertTable :: Key -> Value -> Table -> Table
+insertTable :: Ord a => a -> b -> Table a b -> Table a b
 insertTable k v tbl =
   case break ((k >) . fst) tbl of
        (xs, ys) -> xs ++ (k, v):ys
 
-memocc :: Amount -> [Coin] -> Table -> (Count, Table)
+memocc :: Amount -> [Coin] -> Table Key Value -> (Count, Table Key Value)
 memocc 0 _  tbl = (1, tbl)
 memocc _ [] tbl = (0, tbl)
 memocc a ccs@(c:cs) tbl
