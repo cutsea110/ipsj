@@ -18,3 +18,18 @@ memoise f x = do
 
 runM :: (a -> Memo a b) -> a -> b
 runM m v = evalState (m v) Map.empty
+
+edM :: (String, String) -> Memo (String, String) Int
+edM ([],       []      ) = return 0
+edM (xs@(_:_), []      ) = return (length xs)
+edM ([],       ys@(_:_)) = return (length ys)
+edM xys@(_:_,   _:_    ) = memoise edM' xys
+  where
+    edM' (xxs@(x:xs), yys@(y:ys)) = do
+      a <- edM (xs,  ys)
+      b <- edM (xxs, ys)
+      c <- edM (xs,  yys)
+      return (minimum [ (if x == y then 0 else 1) + a, 1 + b, 1 + c ])
+
+edMemo :: (String, String) -> Int
+edMemo = runM edM
