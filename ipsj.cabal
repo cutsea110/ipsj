@@ -36,6 +36,7 @@ library
                        -- 4608
                        CC
                        MemoCC
+                       Memoise
 
   -- other-modules:
   -- other-extensions:
