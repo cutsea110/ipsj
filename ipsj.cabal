@@ -40,6 +40,8 @@ library
                        Lcs
                        -- 4609
                        EditDistance
+                       -- 4610
+                       Hilbert
 
   -- other-modules:
   -- other-extensions:
