@@ -31,9 +31,9 @@ hilbert size n = do
   putStrLn $ show o ++ " " ++ show o ++ " moveto"
   x n (x0, y0)
   putStrLn "stroke"
-    where x0 = size `div` (2^n) -- ^ セグメント長 (- 移動距離)
+    where x0 = size `div` (2^n) -- セグメント長 (= 移動距離)
           y0 = 0
-          o = x0 `div` 2        -- ^ 原点から出発位置までの距離
+          o = x0 `div` 2        -- 原点から出発位置までの距離
 
 main :: IO ()
 main = hilbert 256 5
