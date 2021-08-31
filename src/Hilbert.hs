@@ -15,14 +15,14 @@ x 0     (_, _)   = putStr "" -- 0次なら何もしない. 空を出力
 x (n+1) (x0, y0) = do
   y n (x1, y1); f (x1, y1); x n (x0, y0); f (x0, y0)
   x n (x0, y0); f (x3, y3); y n (x3, y3)
-    where (x1, y1) = left (x0, y0)
+    where (x1, y1) = left  (x0, y0)
           (x3, y3) = right (x0, y0)
 
 y 0     (_, _)   = putStr ""
 y (n+1) (x0, y0) = do
   x n (x3, y3); f (x3, y3); y n (x0, y0); f (x0, y0)
   y n (x0, y0); f (x1, y1); x n (x1, y1)
-    where (x1, y1) = left (x0, y0)
+    where (x1, y1) = left  (x0, y0)
           (x3, y3) = right (x0, y0)
 
 -- | ドライバ
