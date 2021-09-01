@@ -41,8 +41,11 @@ library
                        -- 4609
                        EditDistance
                        -- 4610
-                       Hilbert
+                       SimpleHilbert
                        Painter
+                       Wave
+                       Hilbert
+                       Fish
 
   -- other-modules:
   -- other-extensions:

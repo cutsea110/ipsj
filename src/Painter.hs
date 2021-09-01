@@ -10,13 +10,6 @@ type Painter = Frame -> IO ()
 blank :: Painter
 blank = \frame -> putStr ""
 
-wave :: Painter
-wave = segmentsToPainter 20 20
-  [ [(0, 13), (3, 8), (6, 12), (7, 11), (5, 0)], [(8, 0), (10, 6), (12, 0)]
-  , [(15, 0), (12, 10), (20, 3)], [(20, 7), (15, 13), (12, 13), (13, 17), (12, 20)]
-  , [(8, 20), (7, 17), (8, 13), (6, 13), (3, 12), (0, 17)]
-  ]
-
 infixr 7 +~, -~
 infixr 8 *~
 (+~) :: Vect -> Vect -> Vect
@@ -105,12 +98,3 @@ squareLimit :: Painter -> Int -> Painter
 squareLimit p n = half </> (flipVert half)
   where half = (flipHoriz quarter) <-> quarter
         quarter = cornerSplit p n
-
-main = squareLimit wave 3 unitSquare
-
--------
-
-hilbert = segmentsToPainter 8 8
-  [ [(2, 2), (2, 6), (6, 6), (6, 2)]
-  , [(1, 1), (3, 1), (3, 3), (1, 3), (1, 7), (3, 7), (3, 5), (5, 5), (5, 7), (7, 7), (7, 3), (5, 3), (5, 1), (7, 1)]
-  ]
