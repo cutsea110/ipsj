@@ -42,6 +42,7 @@ library
                        EditDistance
                        -- 4610
                        Hilbert
+                       Painter
 
   -- other-modules:
   -- other-extensions:
