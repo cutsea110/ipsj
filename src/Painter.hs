@@ -63,7 +63,7 @@ beside :: Float -> Float -> Painter -> Painter -> Painter
 beside m n p q =
   \frame -> do transformPainter p (0, 0) (r, 0) (0, 1) frame
                transformPainter q (r, 0) (1, 0) (r, 1) frame
-                 where r = n/(m+n)
+                 where r = m/(m+n)
 
 infixr 3 </>
 infixr 4 <->
@@ -98,3 +98,17 @@ squareLimit :: Painter -> Int -> Painter
 squareLimit p n = half </> (flipVert half)
   where half = (flipHoriz quarter) <-> quarter
         quarter = cornerSplit p n
+
+-- | 左上を中心に 45 度の回転
+rot45 :: Painter -> Painter
+rot45 p = transformPainter p (0.5, 0.5) (1, 1) (0, 1)
+
+-- | 2 枚のペインタを重ねる
+over :: Painter -> Painter -> Painter
+over p q = \frame -> do
+  transformPainter p (0, 0) (1, 0) (0, 1) frame
+  transformPainter q (0, 0) (1, 0) (0, 1) frame
+
+quartet :: Painter -> Painter -> Painter -> Painter -> Painter
+quartet p q r s = (p <-> q) </> (r <-> s)
+

@@ -1,3 +1,4 @@
+{-# LANGUAGE NPlusKPatterns #-}
 module Fish where
 
 import Painter
@@ -25,5 +26,35 @@ fish = segmentsToPainter 80 80
        , [(38, 32), (40, 30)], [(36, 30), (40, 26)]
        ]
 
+fish2 :: Painter
+fish2 = flipHoriz (rot45 fish)
+
+u :: Painter
+u = over
+    (over fish2 (rot fish2))
+    (over (rot (rot fish2)) (rot (rot (rot fish2))))
+t :: Painter
+t = over fish (over fish2 (rot (rot (rot fish2))))
+
+nonet :: Painter -> Painter -> Painter -> Painter -> Painter
+      -> Painter -> Painter -> Painter -> Painter -> Painter
+nonet p q r s t u v w x =
+  above 1 2 (beside 1 2 p (q <-> r))
+            (beside 1 2 s (t <-> u) </> beside 1 2 v (w <-> x))
+
+square :: Int -> Painter
+square n = nonet
+           (corner n) (side n) (rot (rot (rot (corner n))))
+           (rot (side n)) u (rot (rot (rot (side n))))
+           (rot (corner n)) (rot (rot (side n))) (rot (rot (corner n)))
+
+corner :: Int -> Painter
+corner 0 = blank
+corner (n+1) = quartet (corner n) (side n) (rot (side n)) u
+
+side :: Int -> Painter
+side 0 = blank
+side (n+1) = quartet (side n) (side n) (rot t) t
+
 main :: IO ()
-main = squareLimit fish 3 unitSquare
+main = square 2 unitSquare
