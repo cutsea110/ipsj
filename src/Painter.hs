@@ -12,11 +12,13 @@ blank = \frame -> putStr ""
 
 infixr 7 +~, -~
 infixr 8 *~
+
 (+~) :: Vect -> Vect -> Vect
 (x0, y0) +~ (x1, y1) = (x0+x1, y0+y1)
 
 (-~) :: Vect -> Vect -> Vect
 (x0, y0) -~ (x1, y1) = (x0-x1, y0-y1)
+
 (*~) :: Float -> Vect -> Vect
 a *~ (x, y) = (a*x, a*y)
 
