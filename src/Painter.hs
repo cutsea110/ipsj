@@ -95,8 +95,8 @@ upSplit p (n+1) = (smaller <-> smaller) </> p
   where smaller = upSplit p n
 
 squareLimit :: Painter -> Int -> Painter
-squareLimit p n = half </> (flipVert half)
-  where half = (flipHoriz quarter) <-> quarter
+squareLimit p n = half </> flipVert half
+  where half = flipHoriz quarter <-> quarter
         quarter = cornerSplit p n
 
 -- | 左上を中心に 45 度の回転
@@ -111,4 +111,3 @@ over p q = \frame -> do
 
 quartet :: Painter -> Painter -> Painter -> Painter -> Painter
 quartet p q r s = (p <-> q) </> (r <-> s)
-
