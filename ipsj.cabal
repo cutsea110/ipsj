@@ -46,6 +46,7 @@ library
                        Wave
                        Hilbert
                        Fish
+                       CrowdOfFunctionalProgrammers
 
   -- other-modules:
   -- other-extensions:
