@@ -47,6 +47,8 @@ library
                        Hilbert
                        Fish
                        CrowdOfFunctionalProgrammers
+                       -- 4611
+                       Sudoku
 
   -- other-modules:
   -- other-extensions:
