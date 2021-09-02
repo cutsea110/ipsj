@@ -10,17 +10,14 @@ type Painter = Frame -> IO ()
 blank :: Painter
 blank = \frame -> putStr ""
 
-infixr 7 +~, -~
-infixr 8 *~
-
-(+~) :: Vect -> Vect -> Vect
-(x0, y0) +~ (x1, y1) = (x0+x1, y0+y1)
-
-(-~) :: Vect -> Vect -> Vect
-(x0, y0) -~ (x1, y1) = (x0-x1, y0-y1)
-
-(*~) :: Float -> Vect -> Vect
-a *~ (x, y) = (a*x, a*y)
+infixr 7 |+|, |-|
+infixr 8 |*|
+(|+|) :: Vect -> Vect -> Vect
+(x0, y0) |+| (x1, y1) = (x0+x1, y0+y1)
+(|-|) :: Vect -> Vect -> Vect
+(x0, y0) |-| (x1, y1) = (x0-x1, y0-y1)
+(|*|) :: Float -> Vect -> Vect
+a |*| (x, y) = (a*x, a*y)
 
 drawLine :: [Vect] -> String
 drawLine ((x, y):xys) = show x ++ " " ++ show y ++ " moveto\n" ++ drawLine' xys
@@ -38,14 +35,14 @@ segmentsToPainter scale0 scale1 segs =
 
 frameCoodMap :: Frame -> (Vect -> Vect)
 frameCoodMap (org, edge0, edge1) =
-  \(x, y) -> org +~ x *~ edge0 +~ y *~ edge1
+  \(x, y) -> org |+| x |*| edge0 |+| y |*| edge1
 
 transformPainter :: Painter -> Vect -> Vect -> Vect -> Painter
 transformPainter painter org edge0 edge1 =
   \frame -> let m = frameCoodMap frame
                 newOrg = m org
-                newEdge0 = m edge0 -~ newOrg
-                newEdge1 = m edge1 -~ newOrg
+                newEdge0 = m edge0 |-| newOrg
+                newEdge1 = m edge1 |-| newOrg
             in painter (newOrg, newEdge0, newEdge1)
 
 rot :: Painter -> Painter
