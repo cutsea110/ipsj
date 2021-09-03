@@ -47,6 +47,7 @@ library
                        Hilbert
                        Fish
                        CrowdOfFunctionalProgrammers
+                       RhinecanthusRectangulus
                        -- 4611
                        Sudoku
 
