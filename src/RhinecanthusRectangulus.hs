@@ -4,7 +4,7 @@ import Painter
 
 humuhumu :: Painter
 humuhumu
-  = segmentsToPainter 150 150
+  = segmentsToPainter 150 90
     [[(7,43),(13,50),(38,63),(50,69),(60,73),(72,69),(98,56),(104,52),(114,46) -- 本体上側
      ,(140,60),(138,58),(139,51),(140,41),(140,38),(132,23),(132,18),(112,33) -- 尾鰭
      ,(106,31),(98,28),(80,20),(70,16),(55,18),(15,36),(7,43)] -- 本体下側
@@ -25,5 +25,21 @@ humuhumu
     ,[(12,70),(14,72),(16,72),(18,70),(18,68),(16,66),(14,66),(12,68),(12,70)] -- 大きい泡
     ]
 
+waterTank :: Frame
+waterTank = ((0,0),(600,0),(0,360))
+
+horiz :: Float -> Painter -> Painter
+horiz 0 _ = blank
+horiz n p = beside 1 (n-1) p (horiz (n-1) p)
+
+school :: [Float] -> Painter -> Painter
+school xs p = foldl f blank $ zip3 (rs++[rest]) (0:accs) (ps++[blank])
+  where inv n = 1/n
+        rs = map inv xs
+        accs = scanl1 (+) rs
+        (ttl, rest) = (last accs, 1 - ttl)
+        ps = map (\(i, n) -> if even i then (horiz n p) else (horiz n (flipHoriz p))) $ zip [0..] xs
+        f q (r, s, p) = above r s p q
+
 main :: IO ()
-main = humuhumu unitSquare
+main = school [3,5,7,11,13,17,19,23,27] humuhumu waterTank
