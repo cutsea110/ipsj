@@ -38,7 +38,7 @@ school xs p = foldl f blank $ zip3 (rs++[rest]) (0:accs) (ps++[blank])
         rs = map inv xs
         accs = scanl1 (+) rs
         (ttl, rest) = (last accs, 1 - ttl)
-        ps = map (\(i, n) -> if even i then (horiz n p) else (horiz n (flipHoriz p))) $ zip [0..] xs
+        ps = zipWith (\f n -> horiz n (f p)) (let fs = [id, flipHoriz]++fs in fs) xs
         f q (r, s, p) = above r s p q
 
 main :: IO ()
