@@ -21,7 +21,7 @@ withEPSHeader p
 epsHeader :: Painter
 epsHeader ((ox, oy),(s1x, s1y),(s2x, s2y)) = do
   putStrLn "%!PS-Adobe-3.0 EPSF-3.0"
-  putStrLn $ concat $ intersperse " " [ "%%BoundingBox:", conv ox, conv oy, conv w', conv h']
+  putStrLn $ unwords [ "%%BoundingBox:", conv ox, conv oy, conv w', conv h']
     where conv = show . ceiling
           (w,  h ) = (abs (s1x-s2x), abs (s1y-s2y))
           (w', h') = (w+ox, h+oy)
@@ -53,11 +53,10 @@ segmentsToPainter scale0 scale1 segs =
   \frame -> putStr $
             let toFrame (x, y) = frameCoodMap frame (x/scale0, y/scale1)
                 drawSeg (Line seg) = drawLine (map toFrame seg)
-            in concat (map drawSeg segs) ++ "stroke\n"
+            in concatMap drawSeg segs ++ "stroke\n"
 
 frameCoodMap :: Frame -> (Vect -> Vect)
-frameCoodMap (org, edge0, edge1) =
-  \(x, y) -> org |+| x |*| edge0 |+| y |*| edge1
+frameCoodMap (org, edge0, edge1) (x, y) = org |+| x |*| edge0 |+| y |*| edge1
 
 transformPainter :: Painter -> Vect -> Vect -> Vect -> Painter
 transformPainter painter org edge0 edge1 =
