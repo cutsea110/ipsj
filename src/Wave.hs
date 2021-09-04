@@ -10,4 +10,4 @@ wave = segmentsToPainter 20 20
        ]
 
 main :: IO ()
-main = squareLimit wave 3 unitSquare
+main = withEPSHeader (squareLimit wave 3) unitSquare

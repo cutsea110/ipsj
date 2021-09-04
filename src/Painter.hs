@@ -1,6 +1,8 @@
 {-# LANGUAGE NPlusKPatterns #-}
 module Painter where
 
+import Data.List (intersperse)
+
 type Vect = (Float, Float)
 type LineSegment = [Vect]
 type Figure = [LineSegment]
@@ -19,6 +21,20 @@ infixr 8 |*|
 (|*|) :: Float -> Vect -> Vect
 a |*| (x, y) = (a*x, a*y)
 
+epsHeader :: Painter
+epsHeader ((ox, oy),(s1x, s1y),(s2x, s2y)) = do
+  putStrLn "%!PS-Adobe-3.0 EPSF-3.0"
+  putStrLn $ concat $ intersperse " " [ "%%BoundingBox:", conv ox, conv oy, conv w', conv h']
+    where conv = show . ceiling
+          (w,  h ) = (abs (s1x-s2x), abs (s1y-s2y))
+          (w', h') = (w+ox, h+oy)
+
+withEPSHeader :: Painter -> Painter
+withEPSHeader p
+  = \frame -> do
+  epsHeader frame
+  p frame
+              
 drawLine :: [Vect] -> String
 drawLine ((x, y):xys) = show x ++ " " ++ show y ++ " moveto\n" ++ drawLine' xys
 

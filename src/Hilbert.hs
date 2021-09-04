@@ -9,4 +9,4 @@ hilbert = segmentsToPainter 8 8
           ]
 
 main :: IO ()
-main = squareLimit hilbert 3 unitSquare
+main = withEPSHeader (squareLimit hilbert 3) unitSquare

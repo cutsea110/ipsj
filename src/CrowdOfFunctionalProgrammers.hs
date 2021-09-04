@@ -25,4 +25,4 @@ crowd xs p = foldl f blank $ zip3 (rs++[rest]) (0:accs) (ps++[blank])
         f q (r, s, p) = above r s p q
 
 main :: IO ()
-main = crowd [3, 5, 7, 11, 13] man unitSquare
+main = withEPSHeader (crowd [3, 5, 7, 11, 13] man) unitSquare

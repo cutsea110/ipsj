@@ -57,4 +57,4 @@ side 0 = blank
 side (n+1) = quartet (side n) (side n) (rot t) t
 
 main :: IO ()
-main = square 2 unitSquare
+main = withEPSHeader (square 2) unitSquare

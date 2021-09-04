@@ -38,8 +38,9 @@ school xs p = foldl f blank $ zip3 (rs++[rest]) (0:accs) (ps++[blank])
         rs = map inv xs
         accs = scanl1 (+) rs
         (ttl, rest) = (last accs, 1 - ttl)
-        ps = zipWith (\f n -> horiz n (f p)) (let fs = [id, flipHoriz]++fs in fs) xs
+        fs = [id, flipHoriz]++fs
+        ps = zipWith (\f n -> horiz n (f p)) fs xs
         f q (r, s, p) = above r s p q
 
 main :: IO ()
-main = {- school [3,5,7,11,13,17,19,23,27]-} humuhumu waterTank
+main = withEPSHeader (school [3,5,7,11,13,17,19,23,27] humuhumu) waterTank
