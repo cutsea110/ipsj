@@ -38,9 +38,6 @@ infixr 8 |*|
 (|*|) :: Float -> Vect -> Vect
 a |*| (x, y) = (a*x, a*y)
 
-drawSegment :: Segment -> String
-drawSegment (Line seg) = drawLine seg
-
 drawLine :: [Vect] -> String
 drawLine ((x, y):xys) = show x ++ " " ++ show y ++ " moveto\n" ++ drawLine' xys
 
@@ -48,12 +45,17 @@ drawLine' :: [Vect] -> String
 drawLine' [] = ""
 drawLine' ((x, y):xys) = show x ++ " " ++ show y ++ " lineto\n" ++ drawLine' xys
 
+merge :: [Painter] -> Painter
+merge = foldl (\ps p frame -> ps frame >> p frame) blank
+
 segmentsToPainter :: Float -> Float -> Figure -> Painter
 segmentsToPainter scale0 scale1 segs =
-  \frame -> putStr $
-            let toFrame (x, y) = frameCoodMap frame (x/scale0, y/scale1)
-                drawSeg (Line seg) = drawLine (map toFrame seg)
-            in concatMap drawSeg segs ++ "stroke\n"
+  \frame -> merge (map (drawSegment scale0 scale1) segs) frame >> putStr "stroke\n"
+
+drawSegment :: Float -> Float -> Segment -> Painter
+drawSegment scale0 scale1 (Line seg) =
+  \frame -> putStr $ let toFrame (x, y) = frameCoodMap frame (x/scale0, y/scale1)
+                     in drawLine (map toFrame seg)
 
 frameCoodMap :: Frame -> (Vect -> Vect)
 frameCoodMap (org, edge0, edge1) (x, y) = org |+| x |*| edge0 |+| y |*| edge1
