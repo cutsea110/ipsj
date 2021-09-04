@@ -3,11 +3,28 @@ module Painter where
 
 import Data.List (intersperse)
 
+data Segment = Line [Vect]
+  deriving (Show, Eq, Ord)
+
 type Vect = (Float, Float)
 type LineSegment = [Vect]
-type Figure = [LineSegment]
+type Figure = [Segment]
 type Frame = (Vect, Vect, Vect)
 type Painter = Frame -> IO ()
+
+withEPSHeader :: Painter -> Painter
+withEPSHeader p
+  = \frame -> do
+  epsHeader frame
+  p frame
+
+epsHeader :: Painter
+epsHeader ((ox, oy),(s1x, s1y),(s2x, s2y)) = do
+  putStrLn "%!PS-Adobe-3.0 EPSF-3.0"
+  putStrLn $ concat $ intersperse " " [ "%%BoundingBox:", conv ox, conv oy, conv w', conv h']
+    where conv = show . ceiling
+          (w,  h ) = (abs (s1x-s2x), abs (s1y-s2y))
+          (w', h') = (w+ox, h+oy)
 
 blank :: Painter
 blank = \frame -> putStr ""
@@ -21,20 +38,9 @@ infixr 8 |*|
 (|*|) :: Float -> Vect -> Vect
 a |*| (x, y) = (a*x, a*y)
 
-epsHeader :: Painter
-epsHeader ((ox, oy),(s1x, s1y),(s2x, s2y)) = do
-  putStrLn "%!PS-Adobe-3.0 EPSF-3.0"
-  putStrLn $ concat $ intersperse " " [ "%%BoundingBox:", conv ox, conv oy, conv w', conv h']
-    where conv = show . ceiling
-          (w,  h ) = (abs (s1x-s2x), abs (s1y-s2y))
-          (w', h') = (w+ox, h+oy)
+drawSegment :: Segment -> String
+drawSegment (Line seg) = drawLine seg
 
-withEPSHeader :: Painter -> Painter
-withEPSHeader p
-  = \frame -> do
-  epsHeader frame
-  p frame
-              
 drawLine :: [Vect] -> String
 drawLine ((x, y):xys) = show x ++ " " ++ show y ++ " moveto\n" ++ drawLine' xys
 
@@ -46,7 +52,7 @@ segmentsToPainter :: Float -> Float -> Figure -> Painter
 segmentsToPainter scale0 scale1 segs =
   \frame -> putStr $
             let toFrame (x, y) = frameCoodMap frame (x/scale0, y/scale1)
-                drawSeg seg = drawLine (map toFrame seg)
+                drawSeg (Line seg) = drawLine (map toFrame seg)
             in concat (map drawSeg segs) ++ "stroke\n"
 
 frameCoodMap :: Frame -> (Vect -> Vect)
