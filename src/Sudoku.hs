@@ -1,3 +1,4 @@
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module Sudoku where
 
 import Data.List (nub, minimumBy, transpose, (\\))
@@ -67,3 +68,9 @@ putCell :: SudokuBoard -> (Position, Sudoku) -> SudokuBoard
 putCell b ((i, j), x) = ls0 ++ (xs0 ++ x:xs1):ls1
   where (ls0, l:ls1) = splitAt j b
         (xs0, _:xs1) = splitAt i l
+
+showSudokuBoard :: SudokuBoard -> String
+showSudokuBoard b = unlines $ map (unwords . map show) b
+
+readSudokuBoard :: String -> SudokuBoard
+readSudokuBoard s = map (map read . words) $ lines s
