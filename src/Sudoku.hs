@@ -74,3 +74,9 @@ showSudokuBoard b = unlines $ map (unwords . map show) b
 
 readSudokuBoard :: String -> SudokuBoard
 readSudokuBoard s = map (map read . words) $ lines s
+
+instance {-# OVERLAPPING #-} Show SudokuBoard where
+  show = showSudokuBoard
+
+instance {-# OVERLAPPING #-} Read SudokuBoard where
+  readsPrec _ str = [(readSudokuBoard str, "")]
