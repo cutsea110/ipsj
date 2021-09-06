@@ -51,6 +51,7 @@ library
                        -- 4611
                        Sudoku
                        Puzzle
+                       Kakro
 
   -- other-modules:
   -- other-extensions:
