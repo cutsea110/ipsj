@@ -50,6 +50,7 @@ library
                        RhinecanthusRectangulus
                        -- 4611
                        Sudoku
+                       Puzzle
 
   -- other-modules:
   -- other-extensions:
