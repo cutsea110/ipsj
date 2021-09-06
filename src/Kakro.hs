@@ -1,7 +1,7 @@
 {-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module Kakro where
 
-import Data.List
+import Data.List (intersect, (\\), nub, transpose)
 
 import Puzzle
 
