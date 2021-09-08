@@ -52,6 +52,10 @@ library
                        Sudoku
                        Puzzle
                        Kakro
+                       -- 4612
+                       Mark
+                       Position
+                       TicTacToe
 
   -- other-modules:
   -- other-extensions:
