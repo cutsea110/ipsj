@@ -52,7 +52,7 @@ dynamic :: Int -> Position -> Position
 dynamic m pos = selectPos (-x2) ts2 ts1
   where n1@(Node x1 ts1) = (prune m . gameTree) pos
         Node x2 ts2 = (mapSubTree minimax  . fmap static) n1 -- minimax版
-        -- Node x2 ts2 = (mapSubTree minimax' . fmap static) n1 -- α-β
+--      Node x2 ts2 = (mapSubTree minimax' . fmap static) n1 -- α-β
 
 type ITree = Tree Int
 
