@@ -56,6 +56,10 @@ library
                        Mark
                        Position
                        TicTacToe
+                       -- 4701
+                       Zeller
+                       JulianDate
+                       Calendar
 
   -- other-modules:
   -- other-extensions:
