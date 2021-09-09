@@ -1,4 +1,8 @@
-module Calendar where
+module Calendar
+  ( cal
+  , cc
+  , month
+  ) where
 
 import Zeller
 

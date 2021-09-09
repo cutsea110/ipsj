@@ -60,6 +60,7 @@ library
                        Zeller
                        JulianDate
                        Calendar
+                       Calendars
 
   -- other-modules:
   -- other-extensions:
