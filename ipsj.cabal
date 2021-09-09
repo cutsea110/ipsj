@@ -61,6 +61,8 @@ library
                        JulianDate
                        Calendar
                        Calendars
+                       -- 4702
+                       Lexer
 
   -- other-modules:
   -- other-extensions:
