@@ -44,4 +44,4 @@ leap y = dif 4 - dif 100 + dif 400
 cc :: Int -> Int -> [String]
 cc y m = let z = 1 - zeller y m 1
              ld = [31, 28+leap y, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] !! (m-1)
-         in daynames : map (`intsToString` ld) [[d..d+6]|d<-[z,z+7..z+35]]
+         in daynames : map (`intsToString` ld) [[d..d+6] | d <- [z,z+7..z+35]]
