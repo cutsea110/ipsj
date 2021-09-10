@@ -80,3 +80,28 @@ pbop = sat (`elem` "+-*/")
 
 instance Read Term where
   readsPrec _ = runParser pterm
+
+----
+
+char :: Char -> Parser Char Char
+char c = sat (c==)
+
+pS :: Parser Char String
+pS = do { a  <- pa
+        ; bc <- pB
+        ; d  <- pd
+        ; return ([a]++bc++[d])
+        }
+
+pB :: Parser Char String
+pB = (do { b <- pb; return [b] }) `alt`
+     (do { b <- pb; c <- pc; return (b:[c])})
+
+pa :: Parser Char Char
+pa = char 'a'
+pb :: Parser Char Char
+pb = char 'b'
+pc :: Parser Char Char
+pc = char 'c'
+pd :: Parser Char Char
+pd = char 'd'
