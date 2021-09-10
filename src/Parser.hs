@@ -3,12 +3,18 @@ module Parser where
 import Data.Char
 import Control.Monad
 import Control.Monad.State
+import Data.Maybe (maybeToList)
 
 import Ticket
 
+-- | List
 type Parser t a = StateT [t] [] a
+{-
+-- | Maybe
+type Parser t a = StateT [t] Maybe a
+-}
 
-runParser :: Parser t a -> [t] -> [(a, [t])]
+runParser :: StateT s m a -> s -> m (a, s)
 runParser = runStateT
 
 failure :: Parser t a
@@ -78,8 +84,15 @@ pval = do { c <- sat (`elem` ['0'..'9'])
 pbop :: Parser Char Char
 pbop = sat (`elem` "+-*/")
 
+
+-- | List
 instance Read Term where
   readsPrec _ = runParser pterm
+{-
+-- | Maybe
+instance Read Term where
+  readsPrec _ = maybeToList . runParser pterm
+-}
 
 ----
 
