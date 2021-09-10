@@ -64,6 +64,8 @@ library
                        -- 4702
                        Lexer
                        Parser
+                       -- 4703
+                       Quine
 
   -- other-modules:
   -- other-extensions:
