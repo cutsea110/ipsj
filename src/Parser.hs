@@ -4,6 +4,8 @@ import Data.Char
 import Control.Monad
 import Control.Monad.State
 
+import Ticket
+
 type Parser t a = StateT [t] [] a
 
 runParser :: Parser t a -> [t] -> [(a, [t])]
@@ -53,3 +55,28 @@ hello = sat ("Hello"==)
 
 goodbye :: Parser String String
 goodbye = sat ("Goodbye"==)
+
+-----
+
+pterm :: Parser Char Term
+pterm = papp `alt` pval
+
+papp :: Parser Char Term
+papp = do { sat ('('==)
+          ; l <- pterm
+          ; o <- pbop
+          ; r <- pterm
+          ; sat (')'==)
+          ; return (App o l r)
+          }
+
+pval :: Parser Char Term
+pval = do { c <- sat (`elem` ['0'..'9'])
+          ; return (Val c)
+          }
+
+pbop :: Parser Char Char
+pbop = sat (`elem` "+-*/")
+
+instance Read Term where
+  readsPrec _ = runParser pterm
