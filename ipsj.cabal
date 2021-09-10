@@ -63,6 +63,7 @@ library
                        Calendars
                        -- 4702
                        Lexer
+                       Parser
 
   -- other-modules:
   -- other-extensions:
