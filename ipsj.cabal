@@ -62,6 +62,7 @@ library
                        Calendar
                        Calendars
                        Easter
+                       SolarLongitude
                        -- 4702
                        Lexer
                        Parser
