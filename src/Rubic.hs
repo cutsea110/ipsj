@@ -108,6 +108,16 @@ prime U' = U
 prime D  = D'
 prime D' = D
 
+inverse :: [Hand] -> [Hand]
+inverse = reverse . map prime
+
+-- Lines of the Palm
+m :: [Hand]
+m = [R', L]
+
+sledgeHammer :: [Hand]
+sledgeHammer = [R', F, R, F']
+
 -- Lemma
 
 {- |
