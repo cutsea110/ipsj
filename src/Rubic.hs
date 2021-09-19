@@ -77,7 +77,7 @@ encode D  = d
 encode D' = d'
 
 isIdent :: [Hand] -> Bool
-isIdent [x, y] = inverse x == y
+isIdent [x, y] = prime x == y
 
 seqs :: Int -> [[Hand]]
 seqs 1 = [[x] | x <- [R .. D']]
@@ -92,21 +92,21 @@ run = prodPerm . map encode
 
 trans :: [Hand] -> [Hand] -> [Hand]
 trans g f = g ++ f ++ g'
-  where g' = reverse $ map inverse g
+  where g' = reverse $ map prime g
 
-inverse :: Hand -> Hand
-inverse R  = R'
-inverse R' = R
-inverse F  = F'
-inverse F' = F
-inverse L  = L'
-inverse L' = L
-inverse B  = B'
-inverse B' = B
-inverse U  = U'
-inverse U' = U
-inverse D  = D'
-inverse D' = D
+prime :: Hand -> Hand
+prime R  = R'
+prime R' = R
+prime F  = F'
+prime F' = F
+prime L  = L'
+prime L' = L
+prime B  = B'
+prime B' = B
+prime U  = U'
+prime U' = U
+prime D  = D'
+prime D' = D
 
 -- Lemma
 
