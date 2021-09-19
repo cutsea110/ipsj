@@ -115,6 +115,9 @@ inverse = reverse . map prime
 m :: [Hand]
 m = [R', L]
 
+trigger :: [Hand]
+trigger = [R, U, R']
+
 sledgeHammer :: [Hand]
 sledgeHammer = [R', F, R, F']
 
