@@ -121,6 +121,9 @@ trigger = [R, U, R']
 jackKhife :: [Hand]
 jackKhife = [R, U', R']
 
+snake :: [Hand]
+snake = [R', F, R]
+
 sledgeHammer :: [Hand]
 sledgeHammer = [R', F, R, F']
 
