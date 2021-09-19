@@ -118,6 +118,9 @@ m = [R', L]
 trigger :: [Hand]
 trigger = [R, U, R']
 
+jackKhife :: [Hand]
+jackKhife = [R, U', R']
+
 sledgeHammer :: [Hand]
 sledgeHammer = [R', F, R, F']
 
