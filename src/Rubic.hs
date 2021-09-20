@@ -111,10 +111,10 @@ prime D' = D
 inverse :: [Hand] -> [Hand]
 inverse = reverse . map prime
 
--- Lines of the Palm
 m :: [Hand]
 m = [R', L]
 
+-- Chunks - Basic Moves
 trigger :: [Hand]
 trigger = [R, U, R']
 
@@ -126,6 +126,12 @@ snake = [R', F, R]
 
 sledgeHammer :: [Hand]
 sledgeHammer = [R', F, R, F']
+
+hedgeSlammer :: [Hand]
+hedgeSlammer = [F, R', F', R]
+
+sexy :: [Hand]
+sexy = [R, U, R', U']
 
 -- Lemma
 
