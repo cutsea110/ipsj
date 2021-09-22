@@ -134,6 +134,11 @@ sexy :: [Hand]
 sexy = [R, U, R', U']
 
 -- Lemma
+tPerm :: [Hand]
+tPerm = [R, U, R', U', R', F, R, R, U', R', U', R, U, R', F']
+
+yPerm :: [Hand]
+yPerm = [F, R, U', R', U', R, U, R', F', R, U, R', U', R', F, R, F']
 
 {- |
 >>> run edgeCycle3
