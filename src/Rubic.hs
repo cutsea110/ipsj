@@ -146,9 +146,11 @@ uaPerm = [R, U', R, U, R, U, R, U', R', U', R', R']
 ubPerm :: [Hand]
 ubPerm = inverse uaPerm
 
+-- no x on the first of sequence
 aaPerm :: [Hand]
 aaPerm = [R, R, D, D, R', U', R, D, D, R', U, R']
 
+-- no x on the first of sequence
 abPerm :: [Hand]
 abPerm = [R, U', R, D, D, R', U, R, D, D, R', R']
 
