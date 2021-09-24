@@ -146,6 +146,12 @@ uaPerm = [R, U', R, U, R, U, R, U', R', U', R', R']
 ubPerm :: [Hand]
 ubPerm = inverse uaPerm
 
+aaPerm :: [Hand]
+aaPerm = [R, R, D, D, R', U', R, D, D, R', U, R']
+
+abPerm :: [Hand]
+abPerm = [R, U', R, D, D, R', U, R, D, D, R', R']
+
 {- |
 >>> run edgeCycle3
 [[RU,FU,LU],[UR,UF,UL]]
