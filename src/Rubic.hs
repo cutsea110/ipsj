@@ -111,8 +111,8 @@ prime D' = D
 inverse :: [Hand] -> [Hand]
 inverse = reverse . map prime
 
-m :: [Hand]
-m = [R', L]
+-- m :: [Hand]
+-- m = [R', L]
 
 -- Chunks - Basic Moves
 trigger :: [Hand]
