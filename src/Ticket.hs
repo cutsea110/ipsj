@@ -1,6 +1,9 @@
 module Ticket where
 
 import Data.Char (ord)
+import Data.Function (on)
+import Data.List (groupBy)
+import GHC.Exts (sortWith)
 
 data Term = Val Char | App Char Term Term
 
@@ -51,6 +54,11 @@ ctoo '/' (x, y) (z, w) = if z == 0 then (0, 0) else (x*w, y*z)
 ticket :: Int -> [Char] -> Term
 ticket n ds = head (filter (same n) (allterms ds))
 
+safeTicket :: Int -> [Char] -> Maybe Term
+safeTicket n ds = safeHead (filter (same n) (allterms ds))
+  where safeHead []    = Nothing
+        safeHead (x:_) = Just x
+
 same :: Int -> (Term -> Bool)
 same i t = i*d == n && d /= 0
   where
@@ -73,3 +81,17 @@ splits (x:xs) = ([], x:xs) : [ (x:ys, zs) | (ys, zs) <- splits xs ]
 rperm _  0 = [[]]
 rperm [] _ = []
 rperm xs n = [ x:ys | x <- xs, ys <- rperm xs (n-1) ]
+
+----
+-- Math Math Sansu
+--
+four4 :: [(Int, Term)]
+four4 = map (\n -> (n, ticket n "4444")) [0..9]
+
+four7 :: [(Int, Maybe Term)]
+four7 = map (\n -> (n, safeTicket n "7777")) [0..9]
+
+topOfFour7 :: [(Maybe Int, Term)]
+topOfFour7 = take 10 $ reverse $ map head $ groupBy ((==) `on` fst) $ sortWith fst alls
+  where alls = map (\x -> (f (eval x), x)) (allterms "7777")
+        f (n, d) = if d /= 0 then Just (n `div` d) else Nothing
