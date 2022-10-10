@@ -95,3 +95,10 @@ topOfFour7 :: [(Maybe Int, Term)]
 topOfFour7 = take 10 $ reverse $ map head $ groupBy ((==) `on` fst) $ sortWith fst alls
   where alls = map (\x -> (f (eval x), x)) (allterms "7777")
         f (n, d) = if d /= 0 then Just (n `div` d) else Nothing
+
+fourN :: Char -> IO ()
+fourN c = mapM_ act [0..9]
+  where act n = do
+          putStr (show n)
+          putStr " <= "
+          print (safeTicket n [c,c,c,c])
